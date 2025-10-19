@@ -64,6 +64,9 @@ function initializeApp() {
     // Create background particles
     createParticles();
     
+    // Initialize animations CSS (one time)
+    initializeAnimations();
+    
     // Add smooth scroll behavior to navigation links
     setupNavigation();
     
@@ -80,6 +83,30 @@ function initializeApp() {
             searchQuotes();
         }
     });
+}
+
+// Initialize all animations once during page load
+function initializeAnimations() {
+    if (!document.getElementById('dynamic-animations')) {
+        const style = document.createElement('style');
+        style.id = 'dynamic-animations';
+        style.textContent = `
+            @keyframes confettiAnim {
+                0% {
+                    transform: translate(-50%, -50%) translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(
+                        calc(-50% + var(--tx)),
+                        calc(-50% + var(--ty))
+                    ) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // ===== BACKGROUND PARTICLES =====
@@ -363,6 +390,9 @@ function showCelebration() {
     
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
+        const tx = Math.random() * 400 - 200;
+        const ty = Math.random() * 400 - 200;
+        
         confetti.style.cssText = `
             position: fixed;
             width: 10px;
@@ -372,42 +402,17 @@ function showCelebration() {
             top: 50%;
             transform: translate(-50%, -50%);
             border-radius: 50%;
-            animation: confetti ${Math.random() * 2 + 1}s ease-out forwards;
+            --tx: ${tx}px;
+            --ty: ${ty}px;
+            animation: confettiAnim ${Math.random() * 2 + 1}s ease-out forwards;
             z-index: 9999;
         `;
         document.body.appendChild(confetti);
         
         setTimeout(() => confetti.remove(), 3000);
     }
-    
-    // Add confetti animation if not exists
-    if (!document.getElementById('confetti-animation')) {
-        const style = document.createElement('style');
-        style.id = 'confetti-animation';
-        style.textContent = `
-            @keyframes confetti {
-                0% {
-                    transform: translate(-50%, -50%) translateY(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translate(
-                        calc(-50% + ${Math.random() * 400 - 200}px),
-                        calc(-50% + ${Math.random() * 400 - 200}px)
-                    ) rotate(${Math.random() * 720}deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
 }
 
 // ===== UTILITY FUNCTIONS =====
-// Add smooth transitions for all elements
-document.querySelectorAll('*').forEach(el => {
-    el.style.transition = el.style.transition || 'all 0.3s ease';
-});
-
 console.log('🚀 MotivateMe App Loaded Successfully!');
 console.log('✨ Total Quotes Available:', quotesDatabase.length);

@@ -689,7 +689,9 @@ footer p {
     }
     
     .nav-links {
-        display: none;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.9rem;
     }
     
     .quote-card {
