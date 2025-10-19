@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotivateMe - Your Daily Inspiration Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <span class="logo-icon">✨</span>
+                    <span class="logo-text">MotivateMe</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#quotes">Quotes</a></li>
+                    <li><a href="#tasks">Tasks</a></li>
+                    <li><a href="#success">Success Tips</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Empower Your Journey</span>
+                </h1>
+                <p class="hero-subtitle">Transform your mindset. Achieve your dreams. One day at a time.</p>
+                <button class="cta-button" onclick="scrollToSection('quotes')">
+                    Get Inspired Today
+                </button>
+            </div>
+        </section>
+
+        <!-- Quote of the Day Section -->
+        <section id="quotes" class="quotes-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">💫</span>
+                    Daily Inspiration
+                </h2>
+                
+                <div class="quote-card main-quote">
+                    <div class="quote-icon">"</div>
+                    <p class="quote-text" id="mainQuote">Loading inspiration...</p>
+                    <p class="quote-author" id="mainAuthor">- Author</p>
+                    <button class="refresh-btn" onclick="getNewQuote()">
+                        <span class="refresh-icon">↻</span> New Quote
+                    </button>
+                </div>
+
+                <!-- Search Quotes -->
+                <div class="search-container">
+                    <h3 class="subsection-title">Search Quotes</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search for quotes, authors, or topics..." />
+                        <button onclick="searchQuotes()">🔍</button>
+                    </div>
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+
+                <!-- Quote Categories -->
+                <div class="categories">
+                    <h3 class="subsection-title">Browse by Category</h3>
+                    <div class="category-grid">
+                        <button class="category-btn" onclick="filterQuotes('success')">🏆 Success</button>
+                        <button class="category-btn" onclick="filterQuotes('motivation')">⚡ Motivation</button>
+                        <button class="category-btn" onclick="filterQuotes('persistence')">💪 Persistence</button>
+                        <button class="category-btn" onclick="filterQuotes('wisdom')">🧠 Wisdom</button>
+                        <button class="category-btn" onclick="filterQuotes('courage')">🦁 Courage</button>
+                        <button class="category-btn" onclick="filterQuotes('dreams')">✨ Dreams</button>
+                    </div>
+                </div>
+
+                <!-- Filtered Results -->
+                <div id="filteredQuotes" class="filtered-quotes"></div>
+            </div>
+        </section>
+
+        <!-- Tasks & Goals Section -->
+        <section id="tasks" class="tasks-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">✅</span>
+                    Your Action Plan
+                </h2>
+                
+                <div class="tasks-grid">
+                    <div class="task-column">
+                        <h3 class="task-column-title">Add New Task</h3>
+                        <div class="task-input-container">
+                            <input type="text" id="taskInput" placeholder="What do you want to achieve?" />
+                            <button class="add-task-btn" onclick="addTask()">
+                                <span>+</span> Add Task
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="task-column">
+                        <h3 class="task-column-title">Active Tasks</h3>
+                        <ul id="taskList" class="task-list"></ul>
+                    </div>
+
+                    <div class="task-column">
+                        <h3 class="task-column-title">Completed</h3>
+                        <ul id="completedList" class="task-list completed-tasks"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Tips Section -->
+        <section id="success" class="success-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">🎯</span>
+                    Success Principles
+                </h2>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">🌅</div>
+                        <h3>Start Early</h3>
+                        <p>Successful people wake up early and take control of their morning routine. The early hours set the tone for the entire day.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">📚</div>
+                        <h3>Never Stop Learning</h3>
+                        <p>Continuous learning is the key to staying relevant. Read, listen, watch, and absorb knowledge daily.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <h3>Set Clear Goals</h3>
+                        <p>Define your objectives with clarity. Write them down, break them into actionable steps, and track your progress.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">🤝</div>
+                        <h3>Build Relationships</h3>
+                        <p>Your network is your net worth. Surround yourself with positive, ambitious people who lift you higher.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">💎</div>
+                        <h3>Embrace Failure</h3>
+                        <p>Failure is not the opposite of success, it's a stepping stone. Learn from mistakes and keep moving forward.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <h3>Take Action</h3>
+                        <p>Ideas without execution are just dreams. Take massive action towards your goals every single day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MotivateMe. Your journey to success starts here.</p>
+            <p class="footer-tagline">✨ Believe. Achieve. Succeed. ✨</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
