@@ -4,15 +4,19 @@ A beautiful, modern static website built with HTML, CSS, and JavaScript to motiv
 
 ## 🌟 Features
 
-- **Daily Inspiration Quotes**: Get motivated with 36+ hand-picked inspirational quotes from successful leaders and thinkers
+- **Daily Inspiration Quotes**: Get motivated with 50+ hand-picked inspirational quotes from successful leaders and thinkers
+- **Quote Favorites**: Save your favorite quotes for quick access with a simple click
 - **Smart Search**: Search quotes by keyword, author, or topic
-- **Category Filtering**: Browse quotes by categories (Success, Motivation, Persistence, Wisdom, Courage, Dreams)
+- **Category Filtering**: Browse quotes by categories (Success, Motivation, Persistence, Wisdom, Courage, Dreams, Leadership, Growth)
+- **Focus Timer (Pomodoro)**: Built-in productivity timer with customizable presets (25min focus, 5min break, 15min break, 50min deep work)
+- **Progress Tracking**: Track your focus sessions, total focus time, and daily streaks
 - **Task Management**: Add, complete, and manage your daily goals with a beautiful interface
+- **Task Statistics**: View your task completion rate and productivity metrics
 - **Success Principles**: Learn 6 key principles that successful people follow
 - **Dark Modern Theme**: Eye-friendly dark theme with vibrant gradient accents
 - **Smooth Animations**: Engaging animations and transitions throughout
 - **Responsive Design**: Works beautifully on desktop, tablet, and mobile devices
-- **Local Storage**: Your tasks are saved automatically in your browser
+- **Local Storage**: Your tasks, favorites, and timer stats are saved automatically in your browser
 
 ## 🚀 Getting Started
 
@@ -39,8 +43,17 @@ Then open `http://localhost:8000` in your browser.
 
 ### Quotes Section
 - **New Quote**: Click the "↻ New Quote" button to get a fresh inspiration
+- **Favorite Quotes**: Click the heart button (🤍/❤️) to save quotes to your favorites
 - **Search**: Type keywords in the search box to find specific quotes
 - **Browse Categories**: Click category buttons to filter quotes by topic
+- **View Favorites**: Click the "❤️ Favorites" category to see all your saved quotes
+
+### Focus Timer Section
+1. Choose a preset time (25min focus, 5min break, 15min break, or 50min deep work)
+2. Click "▶️ Start" to begin your focus session
+3. Use "⏸️ Pause" to take a break, or "🔄 Reset" to start over
+4. Track your daily progress with session count, total focus time, and streak counter
+5. Get a celebration when you complete a session! 🎉
 
 ### Tasks Section
 1. Enter your goal in the "What do you want to achieve?" field
@@ -50,7 +63,7 @@ Then open `http://localhost:8000` in your browser.
 5. Use the delete button (🗑️) to remove tasks permanently
 
 ### Navigation
-- Click on navigation links (Home, Quotes, Tasks, Success Tips) to jump to sections
+- Click on navigation links (Home, Quotes, Tasks, Focus Timer, Success Tips) to jump to sections
 - Smooth scroll automatically takes you there
 
 ## 🎨 Color Scheme
@@ -63,11 +76,11 @@ The app uses a modern dark theme with carefully selected colors:
 
 ## 💾 Data Persistence
 
-Your tasks are automatically saved to your browser's LocalStorage, so they persist even when you close the browser. Tasks are saved whenever you:
-- Add a new task
-- Complete a task
-- Delete a task
-- Restore a completed task
+Your data is automatically saved to your browser's LocalStorage, so it persists even when you close the browser:
+- **Tasks**: Active and completed tasks
+- **Favorite Quotes**: All quotes you've marked as favorites
+- **Timer Stats**: Daily focus sessions, total focus time, and streak count
+- **Daily Streaks**: Maintains your consecutive days of productivity (resets if you skip a day)
 
 ## 🛠️ Technologies Used
 
@@ -86,13 +99,15 @@ Works on all modern browsers:
 
 ## 📝 Quote Categories
 
-The app includes 36 quotes across 6 categories:
+The app includes 50+ quotes across 8 categories:
 - **Success** (6 quotes): Tips and insights on achieving success
 - **Motivation** (7 quotes): Inspirational messages to keep you going
 - **Persistence** (6 quotes): Encouragement to never give up
 - **Wisdom** (6 quotes): Timeless wisdom from great thinkers
 - **Courage** (5 quotes): Building bravery and confidence
-- **Dreams** (6 quotes): Pursuing your aspirations
+- **Dreams** (8 quotes): Pursuing your aspirations
+- **Leadership** (5 quotes): Lessons on leading and inspiring others
+- **Growth** (6 quotes): Personal development and continuous improvement
 
 ## 🎯 Success Principles
 
