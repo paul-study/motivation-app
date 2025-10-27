@@ -12,6 +12,16 @@
 <body>
     <div class="particles" id="particles"></div>
     
+    <!-- SVG Definitions -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+    
     <header>
         <nav class="navbar">
             <div class="container">
@@ -23,6 +33,7 @@
                     <li><a href="#home" class="active">Home</a></li>
                     <li><a href="#quotes">Quotes</a></li>
                     <li><a href="#tasks">Tasks</a></li>
+                    <li><a href="#timer">Focus Timer</a></li>
                     <li><a href="#success">Success Tips</a></li>
                 </ul>
             </div>
@@ -53,21 +64,26 @@
                 
                 <div class="quote-card main-quote">
                     <div class="quote-icon">"</div>
-                    <p class="quote-text" id="mainQuote">Loading inspiration...</p>
+                    <p class="quote-text" id="mainQuote" role="status" aria-live="polite">Loading inspiration...</p>
                     <p class="quote-author" id="mainAuthor">- Author</p>
-                    <button class="refresh-btn" onclick="getNewQuote()">
-                        <span class="refresh-icon">↻</span> New Quote
-                    </button>
+                    <div class="quote-actions">
+                        <button class="refresh-btn" onclick="getNewQuote()" aria-label="Get a new random quote">
+                            <span class="refresh-icon">↻</span> New Quote
+                        </button>
+                        <button class="favorite-btn" onclick="toggleFavoriteQuote()" id="favoriteBtn" title="Add to favorites" aria-label="Add quote to favorites">
+                            <span id="favoriteIcon">🤍</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Search Quotes -->
                 <div class="search-container">
                     <h3 class="subsection-title">Search Quotes</h3>
                     <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Search for quotes, authors, or topics..." />
-                        <button onclick="searchQuotes()">🔍</button>
+                        <input type="text" id="searchInput" placeholder="Search for quotes, authors, or topics..." aria-label="Search quotes by keyword, author, or topic" />
+                        <button onclick="searchQuotes()" aria-label="Search">🔍</button>
                     </div>
-                    <div id="searchResults" class="search-results"></div>
+                    <div id="searchResults" class="search-results" role="region" aria-live="polite"></div>
                 </div>
 
                 <!-- Quote Categories -->
@@ -80,11 +96,80 @@
                         <button class="category-btn" onclick="filterQuotes('wisdom')">🧠 Wisdom</button>
                         <button class="category-btn" onclick="filterQuotes('courage')">🦁 Courage</button>
                         <button class="category-btn" onclick="filterQuotes('dreams')">✨ Dreams</button>
+                        <button class="category-btn" onclick="filterQuotes('leadership')">👑 Leadership</button>
+                        <button class="category-btn" onclick="filterQuotes('growth')">🌱 Growth</button>
+                        <button class="category-btn favorite-quotes" onclick="showFavoriteQuotes()">❤️ Favorites</button>
                     </div>
                 </div>
 
                 <!-- Filtered Results -->
                 <div id="filteredQuotes" class="filtered-quotes"></div>
+            </div>
+        </section>
+
+        <!-- Pomodoro Timer Section -->
+        <section id="timer" class="timer-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">⏰</span>
+                    Focus Timer
+                </h2>
+                
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <div class="timer-circle" role="timer" aria-label="Focus timer">
+                            <svg class="timer-progress" viewBox="0 0 200 200" aria-hidden="true">
+                                <circle class="timer-progress-bg" cx="100" cy="100" r="90"></circle>
+                                <circle class="timer-progress-bar" cx="100" cy="100" r="90" id="timerProgressBar"></circle>
+                            </svg>
+                            <div class="timer-text">
+                                <div class="timer-time" id="timerDisplay" aria-live="polite">25:00</div>
+                                <div class="timer-label" id="timerLabel">Focus Time</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <button class="timer-btn start-btn" onclick="startTimer()" id="startBtn" aria-label="Start focus timer">
+                            ▶️ Start
+                        </button>
+                        <button class="timer-btn pause-btn" onclick="pauseTimer()" id="pauseBtn" style="display: none;" aria-label="Pause timer">
+                            ⏸️ Pause
+                        </button>
+                        <button class="timer-btn reset-btn" onclick="resetTimer()" aria-label="Reset timer">
+                            🔄 Reset
+                        </button>
+                    </div>
+                    
+                    <div class="timer-presets">
+                        <button class="preset-btn" onclick="setTimerPreset(25)">25 min Focus</button>
+                        <button class="preset-btn" onclick="setTimerPreset(5)">5 min Break</button>
+                        <button class="preset-btn" onclick="setTimerPreset(15)">15 min Break</button>
+                        <button class="preset-btn" onclick="setTimerPreset(50)">50 min Deep Work</button>
+                    </div>
+                    
+                    <div class="timer-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="sessionsCompleted">0</div>
+                            <div class="stat-label">Sessions Today</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalFocusTime">0</div>
+                            <div class="stat-label">Minutes Focused</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="dailyStreak">0</div>
+                            <div class="stat-label">Day Streak 🔥</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-settings">
+                        <label class="setting-item">
+                            <input type="checkbox" id="soundToggle" onchange="toggleSound()" checked />
+                            <span>🔔 Sound notifications</span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -96,12 +181,27 @@
                     Your Action Plan
                 </h2>
                 
+                <div class="task-stats-overview">
+                    <div class="task-stat-card">
+                        <div class="task-stat-value" id="totalTasksCount">0</div>
+                        <div class="task-stat-label">Active Tasks</div>
+                    </div>
+                    <div class="task-stat-card">
+                        <div class="task-stat-value" id="completedTasksCount">0</div>
+                        <div class="task-stat-label">Completed</div>
+                    </div>
+                    <div class="task-stat-card">
+                        <div class="task-stat-value" id="completionRate">0%</div>
+                        <div class="task-stat-label">Success Rate</div>
+                    </div>
+                </div>
+                
                 <div class="tasks-grid">
                     <div class="task-column">
                         <h3 class="task-column-title">Add New Task</h3>
                         <div class="task-input-container">
-                            <input type="text" id="taskInput" placeholder="What do you want to achieve?" />
-                            <button class="add-task-btn" onclick="addTask()">
+                            <input type="text" id="taskInput" placeholder="What do you want to achieve?" aria-label="Enter a new task" />
+                            <button class="add-task-btn" onclick="addTask()" aria-label="Add task to your list">
                                 <span>+</span> Add Task
                             </button>
                         </div>
@@ -173,6 +273,11 @@
         <div class="container">
             <p>&copy; 2025 MotivateMe. Your journey to success starts here.</p>
             <p class="footer-tagline">✨ Believe. Achieve. Succeed. ✨</p>
+            <p class="footer-shortcuts">
+                <button onclick="showKeyboardShortcutsHelp()" class="shortcuts-btn" aria-label="Show keyboard shortcuts">
+                    ⌨️ Keyboard Shortcuts (Press ?)
+                </button>
+            </p>
         </div>
     </footer>
 
