@@ -64,13 +64,13 @@
                 
                 <div class="quote-card main-quote">
                     <div class="quote-icon">"</div>
-                    <p class="quote-text" id="mainQuote">Loading inspiration...</p>
+                    <p class="quote-text" id="mainQuote" role="status" aria-live="polite">Loading inspiration...</p>
                     <p class="quote-author" id="mainAuthor">- Author</p>
                     <div class="quote-actions">
-                        <button class="refresh-btn" onclick="getNewQuote()">
+                        <button class="refresh-btn" onclick="getNewQuote()" aria-label="Get a new random quote">
                             <span class="refresh-icon">↻</span> New Quote
                         </button>
-                        <button class="favorite-btn" onclick="toggleFavoriteQuote()" id="favoriteBtn" title="Add to favorites">
+                        <button class="favorite-btn" onclick="toggleFavoriteQuote()" id="favoriteBtn" title="Add to favorites" aria-label="Add quote to favorites">
                             <span id="favoriteIcon">🤍</span>
                         </button>
                     </div>
@@ -80,10 +80,10 @@
                 <div class="search-container">
                     <h3 class="subsection-title">Search Quotes</h3>
                     <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Search for quotes, authors, or topics..." />
-                        <button onclick="searchQuotes()">🔍</button>
+                        <input type="text" id="searchInput" placeholder="Search for quotes, authors, or topics..." aria-label="Search quotes by keyword, author, or topic" />
+                        <button onclick="searchQuotes()" aria-label="Search">🔍</button>
                     </div>
-                    <div id="searchResults" class="search-results"></div>
+                    <div id="searchResults" class="search-results" role="region" aria-live="polite"></div>
                 </div>
 
                 <!-- Quote Categories -->
@@ -117,26 +117,26 @@
                 
                 <div class="timer-container">
                     <div class="timer-display">
-                        <div class="timer-circle">
-                            <svg class="timer-progress" viewBox="0 0 200 200">
+                        <div class="timer-circle" role="timer" aria-label="Focus timer">
+                            <svg class="timer-progress" viewBox="0 0 200 200" aria-hidden="true">
                                 <circle class="timer-progress-bg" cx="100" cy="100" r="90"></circle>
                                 <circle class="timer-progress-bar" cx="100" cy="100" r="90" id="timerProgressBar"></circle>
                             </svg>
                             <div class="timer-text">
-                                <div class="timer-time" id="timerDisplay">25:00</div>
+                                <div class="timer-time" id="timerDisplay" aria-live="off">25:00</div>
                                 <div class="timer-label" id="timerLabel">Focus Time</div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="timer-controls">
-                        <button class="timer-btn start-btn" onclick="startTimer()" id="startBtn">
+                        <button class="timer-btn start-btn" onclick="startTimer()" id="startBtn" aria-label="Start focus timer">
                             ▶️ Start
                         </button>
-                        <button class="timer-btn pause-btn" onclick="pauseTimer()" id="pauseBtn" style="display: none;">
+                        <button class="timer-btn pause-btn" onclick="pauseTimer()" id="pauseBtn" style="display: none;" aria-label="Pause timer">
                             ⏸️ Pause
                         </button>
-                        <button class="timer-btn reset-btn" onclick="resetTimer()">
+                        <button class="timer-btn reset-btn" onclick="resetTimer()" aria-label="Reset timer">
                             🔄 Reset
                         </button>
                     </div>
@@ -161,6 +161,13 @@
                             <div class="stat-value" id="dailyStreak">0</div>
                             <div class="stat-label">Day Streak 🔥</div>
                         </div>
+                    </div>
+                    
+                    <div class="timer-settings">
+                        <label class="setting-item">
+                            <input type="checkbox" id="soundToggle" onchange="toggleSound()" checked />
+                            <span>🔔 Sound notifications</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -193,8 +200,8 @@
                     <div class="task-column">
                         <h3 class="task-column-title">Add New Task</h3>
                         <div class="task-input-container">
-                            <input type="text" id="taskInput" placeholder="What do you want to achieve?" />
-                            <button class="add-task-btn" onclick="addTask()">
+                            <input type="text" id="taskInput" placeholder="What do you want to achieve?" aria-label="Enter a new task" />
+                            <button class="add-task-btn" onclick="addTask()" aria-label="Add task to your list">
                                 <span>+</span> Add Task
                             </button>
                         </div>
@@ -266,6 +273,11 @@
         <div class="container">
             <p>&copy; 2025 MotivateMe. Your journey to success starts here.</p>
             <p class="footer-tagline">✨ Believe. Achieve. Succeed. ✨</p>
+            <p class="footer-shortcuts">
+                <button onclick="showKeyboardShortcutsHelp()" class="shortcuts-btn" aria-label="Show keyboard shortcuts">
+                    ⌨️ Keyboard Shortcuts (Press ?)
+                </button>
+            </p>
         </div>
     </footer>
 

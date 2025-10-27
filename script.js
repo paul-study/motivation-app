@@ -106,6 +106,133 @@ function initializeApp() {
             searchQuotes();
         }
     });
+    
+    // Setup keyboard shortcuts
+    setupKeyboardShortcuts();
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Don't trigger shortcuts when typing in input fields
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return;
+        }
+        
+        // Ctrl/Cmd + N: New Quote
+        if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+            e.preventDefault();
+            getNewQuote();
+            showNotification('New quote loaded! (Ctrl/Cmd+N)', 'info');
+        }
+        
+        // Ctrl/Cmd + F: Focus on search
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+            showNotification('Search quotes (Ctrl/Cmd+F)', 'info');
+        }
+        
+        // Ctrl/Cmd + T: Focus on task input
+        if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+            e.preventDefault();
+            document.getElementById('taskInput').focus();
+            showNotification('Add new task (Ctrl/Cmd+T)', 'info');
+        }
+        
+        // Space: Start/Pause timer
+        if (e.key === ' ' && !timerRunning) {
+            e.preventDefault();
+            startTimer();
+        } else if (e.key === ' ' && timerRunning) {
+            e.preventDefault();
+            pauseTimer();
+        }
+        
+        // R: Reset timer
+        if (e.key === 'r' || e.key === 'R') {
+            e.preventDefault();
+            resetTimer();
+        }
+        
+        // L: Toggle favorite on current quote
+        if (e.key === 'l' || e.key === 'L') {
+            e.preventDefault();
+            toggleFavoriteQuote();
+        }
+        
+        // ?: Show keyboard shortcuts help
+        if (e.key === '?') {
+            e.preventDefault();
+            showKeyboardShortcutsHelp();
+        }
+    });
+}
+
+function showKeyboardShortcutsHelp() {
+    const helpMessage = `
+        <div style="text-align: left; padding: 1rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--accent-primary);">⌨️ Keyboard Shortcuts</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 0.5rem;"><strong>Ctrl/Cmd+N</strong> - New quote</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Ctrl/Cmd+F</strong> - Search quotes</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Ctrl/Cmd+T</strong> - Add task</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Space</strong> - Start/Pause timer</li>
+                <li style="margin-bottom: 0.5rem;"><strong>R</strong> - Reset timer</li>
+                <li style="margin-bottom: 0.5rem;"><strong>L</strong> - Toggle favorite quote</li>
+                <li style="margin-bottom: 0.5rem;"><strong>?</strong> - Show this help</li>
+            </ul>
+        </div>
+    `;
+    
+    const helpModal = document.createElement('div');
+    helpModal.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bg-tertiary);
+        border: 2px solid var(--accent-primary);
+        border-radius: 20px;
+        padding: 2rem;
+        z-index: 10001;
+        box-shadow: var(--shadow-lg);
+        max-width: 500px;
+    `;
+    helpModal.innerHTML = helpMessage;
+    
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 10000;
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(helpModal);
+    
+    const closeModal = () => {
+        overlay.remove();
+        helpModal.remove();
+    };
+    
+    overlay.addEventListener('click', closeModal);
+    helpModal.addEventListener('click', (e) => {
+        if (e.target === helpModal) closeModal();
+    });
+    
+    // Close with Escape key
+    const escapeHandler = (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    };
+    document.addEventListener('keydown', escapeHandler);
 }
 
 // Initialize all animations once during page load
@@ -297,6 +424,9 @@ let timerStats = {
     lastActiveDate: null
 };
 
+// Settings
+let soundEnabled = true;
+
 // ===== FAVORITES FUNCTIONALITY =====
 let currentQuote = null;
 let favoriteQuotes = [];
@@ -487,6 +617,14 @@ function loadTimerStats() {
             timerStats.totalFocusTime = 0;
         }
     }
+    
+    // Load sound preference
+    const soundPref = localStorage.getItem('motivationAppSoundEnabled');
+    if (soundPref !== null) {
+        soundEnabled = soundPref === 'true';
+        document.getElementById('soundToggle').checked = soundEnabled;
+    }
+    
     updateTimerStatsDisplay();
 }
 
@@ -565,6 +703,11 @@ function completeTimerSession() {
     timerStats.totalFocusTime += minutesCompleted;
     saveTimerStats();
     
+    // Play sound if enabled
+    if (soundEnabled) {
+        playCompletionSound();
+    }
+    
     // Show celebration
     showNotification(`🎉 Focus session complete! You focused for ${minutesCompleted} minutes!`, 'success');
     showCelebration();
@@ -572,6 +715,47 @@ function completeTimerSession() {
     // Reset timer
     timerSeconds = timerDuration;
     updateTimerDisplay();
+}
+
+// ===== SOUND FUNCTIONALITY =====
+function toggleSound() {
+    soundEnabled = document.getElementById('soundToggle').checked;
+    localStorage.setItem('motivationAppSoundEnabled', soundEnabled);
+    showNotification(soundEnabled ? '🔔 Sound enabled' : '🔕 Sound disabled', 'info');
+}
+
+function playCompletionSound() {
+    // Create a simple completion sound using Web Audio API
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create oscillators for a pleasant notification sound
+        const playTone = (frequency, duration, delay = 0) => {
+            setTimeout(() => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            }, delay);
+        };
+        
+        // Play a pleasant three-tone notification
+        playTone(523.25, 0.15, 0);      // C5
+        playTone(659.25, 0.15, 150);    // E5
+        playTone(783.99, 0.3, 300);     // G5
+    } catch (e) {
+        console.log('Audio not available:', e);
+    }
 }
 
 // ===== NOTIFICATION SYSTEM =====

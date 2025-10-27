@@ -618,6 +618,35 @@ section {
     font-weight: 500;
 }
 
+.timer-settings {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.setting-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.setting-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
+}
+
+.setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent-primary);
+}
+
 /* ===== TASKS SECTION ===== */
 .tasks-section {
     background: var(--bg-secondary);
@@ -875,6 +904,28 @@ footer {
 footer p {
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
+}
+
+.footer-shortcuts {
+    margin-top: 1rem;
+}
+
+.shortcuts-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.shortcuts-btn:hover {
+    background: var(--accent-gradient);
+    border-color: var(--accent-primary);
+    color: white;
+    transform: translateY(-2px);
 }
 
 .footer-tagline {

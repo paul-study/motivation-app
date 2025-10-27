@@ -5,14 +5,17 @@ A beautiful, modern static website built with HTML, CSS, and JavaScript to motiv
 ## 🌟 Features
 
 - **Daily Inspiration Quotes**: Get motivated with 50+ hand-picked inspirational quotes from successful leaders and thinkers
-- **Quote Favorites**: Save your favorite quotes for quick access with a simple click
+- **Quote Favorites**: Save your favorite quotes for quick access with a simple click ❤️
 - **Smart Search**: Search quotes by keyword, author, or topic
 - **Category Filtering**: Browse quotes by categories (Success, Motivation, Persistence, Wisdom, Courage, Dreams, Leadership, Growth)
 - **Focus Timer (Pomodoro)**: Built-in productivity timer with customizable presets (25min focus, 5min break, 15min break, 50min deep work)
-- **Progress Tracking**: Track your focus sessions, total focus time, and daily streaks
+- **Progress Tracking**: Track your focus sessions, total focus time, and daily streaks 🔥
 - **Task Management**: Add, complete, and manage your daily goals with a beautiful interface
 - **Task Statistics**: View your task completion rate and productivity metrics
 - **Success Principles**: Learn 6 key principles that successful people follow
+- **Keyboard Shortcuts**: Boost productivity with powerful keyboard shortcuts (Press ? to see all)
+- **Sound Notifications**: Optional audio alerts when timer sessions complete
+- **Accessibility Features**: ARIA labels and keyboard navigation support
 - **Dark Modern Theme**: Eye-friendly dark theme with vibrant gradient accents
 - **Smooth Animations**: Engaging animations and transitions throughout
 - **Responsive Design**: Works beautifully on desktop, tablet, and mobile devices
@@ -50,10 +53,21 @@ Then open `http://localhost:8000` in your browser.
 
 ### Focus Timer Section
 1. Choose a preset time (25min focus, 5min break, 15min break, or 50min deep work)
-2. Click "▶️ Start" to begin your focus session
-3. Use "⏸️ Pause" to take a break, or "🔄 Reset" to start over
+2. Click "▶️ Start" to begin your focus session (or press **Space**)
+3. Use "⏸️ Pause" to take a break, or "🔄 Reset" to start over (press **R**)
 4. Track your daily progress with session count, total focus time, and streak counter
-5. Get a celebration when you complete a session! 🎉
+5. Toggle sound notifications on/off as preferred
+6. Get a celebration when you complete a session! 🎉
+
+### Keyboard Shortcuts ⌨️
+Boost your productivity with these shortcuts:
+- **Ctrl/Cmd + N** - Get a new random quote
+- **Ctrl/Cmd + F** - Focus on search box
+- **Ctrl/Cmd + T** - Focus on task input
+- **Space** - Start/Pause timer
+- **R** - Reset timer
+- **L** - Toggle favorite on current quote
+- **?** - Show keyboard shortcuts help
 
 ### Tasks Section
 1. Enter your goal in the "What do you want to achieve?" field
