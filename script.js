@@ -1,3 +1,54 @@
+// ===== AFFIRMATIONS DATABASE =====
+const affirmationsDatabase = [
+    "I am capable of achieving my goals",
+    "Today is full of possibilities",
+    "I choose to be confident and strong",
+    "I am worthy of success and happiness",
+    "Every challenge is an opportunity to grow",
+    "I am in control of my thoughts and emotions",
+    "I believe in myself and my abilities",
+    "I am making progress every single day",
+    "I deserve all the good things coming my way",
+    "I am resilient and can overcome any obstacle",
+    "My potential is limitless",
+    "I choose positivity and joy",
+    "I am proud of how far I've come",
+    "I attract success and abundance",
+    "I am focused, determined, and unstoppable"
+];
+
+// ===== BREATHING EXERCISES DATABASE =====
+const breathingExercises = [
+    {
+        name: "4-7-8 Relaxation",
+        description: "Calming technique to reduce stress",
+        steps: [
+            { action: "Inhale", duration: 4, instruction: "Breathe in through your nose" },
+            { action: "Hold", duration: 7, instruction: "Hold your breath" },
+            { action: "Exhale", duration: 8, instruction: "Breathe out through your mouth" }
+        ]
+    },
+    {
+        name: "Box Breathing",
+        description: "Used by Navy SEALs for focus",
+        steps: [
+            { action: "Inhale", duration: 4, instruction: "Breathe in slowly" },
+            { action: "Hold", duration: 4, instruction: "Hold your breath" },
+            { action: "Exhale", duration: 4, instruction: "Breathe out slowly" },
+            { action: "Hold", duration: 4, instruction: "Hold with empty lungs" }
+        ]
+    },
+    {
+        name: "Quick Calm",
+        description: "Fast stress relief in 30 seconds",
+        steps: [
+            { action: "Inhale", duration: 3, instruction: "Deep breath in" },
+            { action: "Hold", duration: 3, instruction: "Pause" },
+            { action: "Exhale", duration: 6, instruction: "Slow breath out" }
+        ]
+    }
+];
+
 // ===== QUOTES DATABASE =====
 const quotesDatabase = [
     // Success Quotes
@@ -83,6 +134,15 @@ function initializeApp() {
     
     // Load timer stats
     loadTimerStats();
+    
+    // Load habits
+    loadHabits();
+    
+    // Load vision board
+    loadVisionBoard();
+    
+    // Display daily affirmation
+    displayDailyAffirmation();
     
     // Create background particles
     createParticles();
@@ -432,6 +492,19 @@ let audioContext = null; // Reusable audio context
 // ===== FAVORITES FUNCTIONALITY =====
 let currentQuote = null;
 let favoriteQuotes = [];
+
+// ===== HABITS TRACKING =====
+let habits = [];
+let habitStats = {};
+
+// ===== BREATHING EXERCISE STATE =====
+let breathingActive = false;
+let breathingInterval = null;
+let currentExercise = null;
+let currentStepIndex = 0;
+
+// ===== VISION BOARD =====
+let visionBoardItems = [];
 
 function loadTasks() {
     // Load from localStorage if available
@@ -901,3 +974,352 @@ function showCelebration() {
 // ===== UTILITY FUNCTIONS =====
 console.log('🚀 MotivateMe App Loaded Successfully!');
 console.log('✨ Total Quotes Available:', quotesDatabase.length);
+
+// ===== DAILY AFFIRMATIONS =====
+function displayDailyAffirmation() {
+    const affirmationElement = document.getElementById('dailyAffirmation');
+    if (!affirmationElement) return;
+    
+    // Get affirmation based on day to ensure same one per day
+    const today = new Date().toDateString();
+    const savedAffirmation = localStorage.getItem('motivationAppDailyAffirmation');
+    const savedDate = localStorage.getItem('motivationAppAffirmationDate');
+    
+    let affirmation;
+    if (savedDate === today && savedAffirmation) {
+        affirmation = savedAffirmation;
+    } else {
+        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+        const index = dayOfYear % affirmationsDatabase.length;
+        affirmation = affirmationsDatabase[index];
+        localStorage.setItem('motivationAppDailyAffirmation', affirmation);
+        localStorage.setItem('motivationAppAffirmationDate', today);
+    }
+    
+    affirmationElement.textContent = affirmation;
+}
+
+function getNewAffirmation() {
+    const affirmationElement = document.getElementById('dailyAffirmation');
+    if (!affirmationElement) return;
+    
+    const randomIndex = Math.floor(Math.random() * affirmationsDatabase.length);
+    const affirmation = affirmationsDatabase[randomIndex];
+    
+    affirmationElement.style.opacity = '0';
+    setTimeout(() => {
+        affirmationElement.textContent = affirmation;
+        affirmationElement.style.opacity = '1';
+    }, 300);
+    
+    showNotification('New affirmation! 💫', 'success');
+}
+
+// ===== HABITS TRACKING =====
+function loadHabits() {
+    const saved = localStorage.getItem('motivationAppHabits');
+    const savedStats = localStorage.getItem('motivationAppHabitStats');
+    
+    if (saved) {
+        habits = JSON.parse(saved);
+    }
+    if (savedStats) {
+        habitStats = JSON.parse(savedStats);
+    }
+    
+    renderHabits();
+}
+
+function saveHabits() {
+    localStorage.setItem('motivationAppHabits', JSON.stringify(habits));
+    localStorage.setItem('motivationAppHabitStats', JSON.stringify(habitStats));
+}
+
+function addHabit() {
+    const input = document.getElementById('habitInput');
+    const habitName = input.value.trim();
+    
+    if (!habitName) {
+        input.style.borderColor = 'var(--danger)';
+        setTimeout(() => {
+            input.style.borderColor = 'var(--border-color)';
+        }, 1000);
+        return;
+    }
+    
+    const habit = {
+        id: Date.now(),
+        name: habitName,
+        createdAt: new Date().toISOString()
+    };
+    
+    habits.push(habit);
+    habitStats[habit.id] = {
+        streak: 0,
+        lastCompleted: null,
+        totalDays: 0,
+        history: []
+    };
+    
+    input.value = '';
+    saveHabits();
+    renderHabits();
+    showNotification('Habit added! 🎯', 'success');
+}
+
+function toggleHabitToday(habitId) {
+    const today = new Date().toDateString();
+    const stats = habitStats[habitId];
+    
+    if (!stats) return;
+    
+    const completedToday = stats.history.includes(today);
+    
+    if (completedToday) {
+        // Remove from history
+        stats.history = stats.history.filter(d => d !== today);
+        showNotification('Habit unchecked', 'info');
+    } else {
+        // Add to history
+        stats.history.push(today);
+        stats.totalDays++;
+        
+        // Update streak
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (stats.lastCompleted === yesterday.toDateString() || stats.streak === 0) {
+            stats.streak++;
+        } else {
+            stats.streak = 1;
+        }
+        
+        stats.lastCompleted = today;
+        showCelebration();
+        showNotification(`Great job! Streak: ${stats.streak} days 🔥`, 'success');
+    }
+    
+    saveHabits();
+    renderHabits();
+}
+
+function deleteHabit(habitId) {
+    habits = habits.filter(h => h.id !== habitId);
+    delete habitStats[habitId];
+    saveHabits();
+    renderHabits();
+    showNotification('Habit removed', 'info');
+}
+
+function renderHabits() {
+    const container = document.getElementById('habitsList');
+    if (!container) return;
+    
+    if (habits.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No habits yet. Add one above!</p>';
+        return;
+    }
+    
+    const today = new Date().toDateString();
+    
+    container.innerHTML = habits.map(habit => {
+        const stats = habitStats[habit.id] || { streak: 0, totalDays: 0, history: [] };
+        const completedToday = stats.history.includes(today);
+        
+        return `
+            <div class="habit-item ${completedToday ? 'completed' : ''}">
+                <div class="habit-content">
+                    <input 
+                        type="checkbox" 
+                        class="habit-checkbox" 
+                        ${completedToday ? 'checked' : ''}
+                        onclick="toggleHabitToday(${habit.id})"
+                    />
+                    <div class="habit-info">
+                        <span class="habit-name">${habit.name}</span>
+                        <span class="habit-stats">
+                            🔥 ${stats.streak} day streak • ✓ ${stats.totalDays} times
+                        </span>
+                    </div>
+                </div>
+                <button class="habit-delete" onclick="deleteHabit(${habit.id})" title="Delete">🗑️</button>
+            </div>
+        `;
+    }).join('');
+}
+
+// ===== BREATHING EXERCISES =====
+function startBreathingExercise(exerciseIndex) {
+    if (breathingActive) {
+        stopBreathingExercise();
+        return;
+    }
+    
+    currentExercise = breathingExercises[exerciseIndex];
+    currentStepIndex = 0;
+    breathingActive = true;
+    
+    const container = document.getElementById('breathingDisplay');
+    const startBtn = document.getElementById('breathingStartBtn');
+    
+    if (startBtn) {
+        startBtn.textContent = '⏸️ Stop';
+    }
+    
+    runBreathingStep();
+}
+
+function runBreathingStep() {
+    if (!breathingActive || !currentExercise) return;
+    
+    const step = currentExercise.steps[currentStepIndex];
+    const container = document.getElementById('breathingDisplay');
+    const instruction = document.getElementById('breathingInstruction');
+    const counter = document.getElementById('breathingCounter');
+    const circle = document.getElementById('breathingCircle');
+    
+    if (!container || !instruction || !counter || !circle) return;
+    
+    instruction.textContent = step.instruction;
+    
+    let timeLeft = step.duration;
+    counter.textContent = timeLeft;
+    
+    // Animate circle based on action
+    if (step.action === 'Inhale') {
+        circle.style.transform = 'scale(1.5)';
+    } else if (step.action === 'Exhale') {
+        circle.style.transform = 'scale(0.7)';
+    } else {
+        circle.style.transform = 'scale(1.2)';
+    }
+    
+    breathingInterval = setInterval(() => {
+        timeLeft--;
+        counter.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+            clearInterval(breathingInterval);
+            currentStepIndex = (currentStepIndex + 1) % currentExercise.steps.length;
+            
+            if (breathingActive) {
+                setTimeout(() => runBreathingStep(), 500);
+            }
+        }
+    }, 1000);
+}
+
+function stopBreathingExercise() {
+    breathingActive = false;
+    if (breathingInterval) {
+        clearInterval(breathingInterval);
+    }
+    
+    const startBtn = document.getElementById('breathingStartBtn');
+    const circle = document.getElementById('breathingCircle');
+    const instruction = document.getElementById('breathingInstruction');
+    const counter = document.getElementById('breathingCounter');
+    
+    if (startBtn) {
+        startBtn.textContent = '▶️ Start';
+    }
+    if (circle) {
+        circle.style.transform = 'scale(1)';
+    }
+    if (instruction) {
+        instruction.textContent = 'Select an exercise to begin';
+    }
+    if (counter) {
+        counter.textContent = '0';
+    }
+}
+
+function selectBreathingExercise(index) {
+    const container = document.getElementById('breathingDisplay');
+    const exerciseInfo = document.getElementById('breathingExerciseName');
+    
+    if (breathingActive) {
+        stopBreathingExercise();
+    }
+    
+    currentExercise = breathingExercises[index];
+    currentStepIndex = 0;
+    
+    if (exerciseInfo) {
+        exerciseInfo.textContent = currentExercise.name;
+    }
+    
+    const instruction = document.getElementById('breathingInstruction');
+    if (instruction) {
+        instruction.textContent = currentExercise.description;
+    }
+}
+
+// ===== VISION BOARD =====
+function loadVisionBoard() {
+    const saved = localStorage.getItem('motivationAppVisionBoard');
+    if (saved) {
+        visionBoardItems = JSON.parse(saved);
+    }
+    renderVisionBoard();
+}
+
+function saveVisionBoard() {
+    localStorage.setItem('motivationAppVisionBoard', JSON.stringify(visionBoardItems));
+}
+
+function addVisionGoal() {
+    const input = document.getElementById('visionGoalInput');
+    const goalText = input.value.trim();
+    
+    if (!goalText) {
+        input.style.borderColor = 'var(--danger)';
+        setTimeout(() => {
+            input.style.borderColor = 'var(--border-color)';
+        }, 1000);
+        return;
+    }
+    
+    const goal = {
+        id: Date.now(),
+        text: goalText,
+        type: 'text',
+        createdAt: new Date().toISOString()
+    };
+    
+    visionBoardItems.push(goal);
+    input.value = '';
+    saveVisionBoard();
+    renderVisionBoard();
+    showNotification('Goal added to vision board! ✨', 'success');
+}
+
+function deleteVisionItem(itemId) {
+    visionBoardItems = visionBoardItems.filter(item => item.id !== itemId);
+    saveVisionBoard();
+    renderVisionBoard();
+}
+
+function renderVisionBoard() {
+    const container = document.getElementById('visionBoardGrid');
+    if (!container) return;
+    
+    if (visionBoardItems.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">Your vision board is empty</p>
+                <p>Add your goals and dreams above to visualize your success!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = visionBoardItems.map(item => `
+        <div class="vision-card">
+            <div class="vision-content">
+                <p>${item.text}</p>
+            </div>
+            <button class="vision-delete" onclick="deleteVisionItem(${item.id})" title="Remove">×</button>
+        </div>
+    `).join('');
+}

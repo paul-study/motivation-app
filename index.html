@@ -32,9 +32,13 @@
                 <ul class="nav-links">
                     <li><a href="#home" class="active">Home</a></li>
                     <li><a href="#quotes">Quotes</a></li>
+                    <li><a href="#affirmations">Affirmations</a></li>
                     <li><a href="#tasks">Tasks</a></li>
-                    <li><a href="#timer">Focus Timer</a></li>
-                    <li><a href="#success">Success Tips</a></li>
+                    <li><a href="#habits">Habits</a></li>
+                    <li><a href="#timer">Focus</a></li>
+                    <li><a href="#breathing">Breathing</a></li>
+                    <li><a href="#vision">Vision</a></li>
+                    <li><a href="#success">Tips</a></li>
                 </ul>
             </div>
         </nav>
@@ -263,6 +267,141 @@
                         <div class="tip-icon">⚡</div>
                         <h3>Take Action</h3>
                         <p>Ideas without execution are just dreams. Take massive action towards your goals every single day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Affirmations Section -->
+        <section id="affirmations" class="affirmations-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">💫</span>
+                    Daily Affirmation
+                </h2>
+                
+                <div class="affirmation-card">
+                    <div class="affirmation-icon">✨</div>
+                    <p class="affirmation-text" id="dailyAffirmation">Loading affirmation...</p>
+                    <button class="refresh-btn" onclick="getNewAffirmation()">
+                        <span class="refresh-icon">↻</span> New Affirmation
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Habit Tracker Section -->
+        <section id="habits" class="habits-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">📊</span>
+                    Habit Tracker
+                </h2>
+                
+                <div class="habits-container">
+                    <div class="habit-input-section">
+                        <h3 class="subsection-title">Track Your Daily Habits</h3>
+                        <div class="habit-input-box">
+                            <input 
+                                type="text" 
+                                id="habitInput" 
+                                placeholder="E.g., Exercise, Read, Meditate..." 
+                                aria-label="Enter a new habit to track"
+                                onkeypress="if(event.key==='Enter') addHabit()"
+                            />
+                            <button class="add-btn" onclick="addHabit()">
+                                <span>+</span> Add Habit
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="habits-list" id="habitsList">
+                        <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No habits yet. Add one above!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Breathing Exercises Section -->
+        <section id="breathing" class="breathing-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">🧘</span>
+                    Breathing Exercises
+                </h2>
+                
+                <div class="breathing-container">
+                    <div class="breathing-display" id="breathingDisplay">
+                        <div class="breathing-circle" id="breathingCircle"></div>
+                        <div class="breathing-info">
+                            <h3 id="breathingExerciseName">Select an Exercise</h3>
+                            <p class="breathing-instruction" id="breathingInstruction">Choose a breathing exercise below to begin</p>
+                            <div class="breathing-counter" id="breathingCounter">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="breathing-controls">
+                        <button class="breathing-btn" id="breathingStartBtn" onclick="startBreathingExercise(0)">
+                            ▶️ Start
+                        </button>
+                    </div>
+                    
+                    <div class="breathing-exercises-grid">
+                        <div class="breathing-exercise-card" onclick="selectBreathingExercise(0)">
+                            <div class="exercise-icon">🌊</div>
+                            <h4>4-7-8 Relaxation</h4>
+                            <p>Calming technique to reduce stress and anxiety</p>
+                        </div>
+                        
+                        <div class="breathing-exercise-card" onclick="selectBreathingExercise(1)">
+                            <div class="exercise-icon">📦</div>
+                            <h4>Box Breathing</h4>
+                            <p>Used by Navy SEALs for focus and calm</p>
+                        </div>
+                        
+                        <div class="breathing-exercise-card" onclick="selectBreathingExercise(2)">
+                            <div class="exercise-icon">⚡</div>
+                            <h4>Quick Calm</h4>
+                            <p>Fast stress relief in just 30 seconds</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Board Section -->
+        <section id="vision" class="vision-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="icon">🎨</span>
+                    Vision Board
+                </h2>
+                
+                <div class="vision-container">
+                    <div class="vision-input-section">
+                        <h3 class="subsection-title">Visualize Your Goals</h3>
+                        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                            Write down your dreams and aspirations. Seeing them daily keeps you motivated!
+                        </p>
+                        <div class="vision-input-box">
+                            <input 
+                                type="text" 
+                                id="visionGoalInput" 
+                                placeholder="E.g., Start my own business, Travel to Japan, Learn guitar..." 
+                                aria-label="Enter a goal or dream"
+                                onkeypress="if(event.key==='Enter') addVisionGoal()"
+                            />
+                            <button class="add-btn" onclick="addVisionGoal()">
+                                <span>+</span> Add Goal
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vision-board-grid" id="visionBoardGrid">
+                        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                            <p style="font-size: 1.5rem; margin-bottom: 1rem;">Your vision board is empty</p>
+                            <p>Add your goals and dreams above to visualize your success!</p>
+                        </div>
                     </div>
                 </div>
             </div>

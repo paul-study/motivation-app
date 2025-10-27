@@ -8,8 +8,12 @@ A beautiful, modern static website built with HTML, CSS, and JavaScript to motiv
 - **Quote Favorites**: Save your favorite quotes for quick access with a simple click ❤️
 - **Smart Search**: Search quotes by keyword, author, or topic
 - **Category Filtering**: Browse quotes by categories (Success, Motivation, Persistence, Wisdom, Courage, Dreams, Leadership, Growth)
+- **Daily Affirmations**: Start your day with positive self-statements that boost confidence and mindset 💫
+- **Habit Tracker**: Build consistency by tracking daily habits with streak counters and completion stats 📊
 - **Focus Timer (Pomodoro)**: Built-in productivity timer with customizable presets (25min focus, 5min break, 15min break, 50min deep work)
 - **Progress Tracking**: Track your focus sessions, total focus time, and daily streaks 🔥
+- **Breathing Exercises**: Guided breathing techniques for stress relief and focus (4-7-8, Box Breathing, Quick Calm) 🧘
+- **Vision Board**: Visualize your goals and dreams by creating a personal vision board 🎨
 - **Task Management**: Add, complete, and manage your daily goals with a beautiful interface
 - **Task Statistics**: View your task completion rate and productivity metrics
 - **Success Principles**: Learn 6 key principles that successful people follow
@@ -19,7 +23,7 @@ A beautiful, modern static website built with HTML, CSS, and JavaScript to motiv
 - **Dark Modern Theme**: Eye-friendly dark theme with vibrant gradient accents
 - **Smooth Animations**: Engaging animations and transitions throughout
 - **Responsive Design**: Works beautifully on desktop, tablet, and mobile devices
-- **Local Storage**: Your tasks, favorites, and timer stats are saved automatically in your browser
+- **Local Storage**: Your tasks, favorites, habits, vision board, and timer stats are saved automatically in your browser
 
 ## 🚀 Getting Started
 
@@ -43,6 +47,35 @@ php -S localhost:8000
 Then open `http://localhost:8000` in your browser.
 
 ## 📖 Usage
+
+### Affirmations Section
+- **Daily Affirmation**: Get a unique positive affirmation each day to build confidence
+- **New Affirmation**: Click the "↻ New Affirmation" button to get a different affirmation anytime
+- **Automatic Daily Change**: The affirmation automatically changes each day
+
+### Habit Tracker Section
+1. Enter a habit you want to build (e.g., "Exercise", "Read", "Meditate")
+2. Click "+ Add Habit" or press Enter
+3. Check the box each day you complete the habit
+4. Track your streaks 🔥 and total completion count
+5. Build consistency and see your progress grow!
+
+### Breathing Exercises Section
+1. Select one of three breathing techniques:
+   - **4-7-8 Relaxation**: Calming technique to reduce stress (Inhale 4s, Hold 7s, Exhale 8s)
+   - **Box Breathing**: Used by Navy SEALs for focus (4s each: Inhale, Hold, Exhale, Hold)
+   - **Quick Calm**: Fast stress relief in 30 seconds (3s Inhale, 3s Hold, 6s Exhale)
+2. Click "▶️ Start" to begin the guided breathing exercise
+3. Follow the on-screen instructions and timer
+4. Watch the breathing circle expand and contract to guide your breath
+5. Click "⏸️ Stop" to end the exercise
+
+### Vision Board Section
+1. Add your goals, dreams, and aspirations in the input field
+2. Click "+ Add Goal" or press Enter
+3. See all your goals displayed on your personal vision board
+4. Hover over goals to reveal the delete button (×)
+5. Keep your dreams visible to stay motivated!
 
 ### Quotes Section
 - **New Quote**: Click the "↻ New Quote" button to get a fresh inspiration
@@ -77,7 +110,7 @@ Boost your productivity with these shortcuts:
 5. Use the delete button (🗑️) to remove tasks permanently
 
 ### Navigation
-- Click on navigation links (Home, Quotes, Tasks, Focus Timer, Success Tips) to jump to sections
+- Click on navigation links (Home, Quotes, Affirmations, Tasks, Habits, Focus, Breathing, Vision, Tips) to jump to sections
 - Smooth scroll automatically takes you there
 
 ## 🎨 Color Scheme
@@ -93,6 +126,9 @@ The app uses a modern dark theme with carefully selected colors:
 Your data is automatically saved to your browser's LocalStorage, so it persists even when you close the browser:
 - **Tasks**: Active and completed tasks
 - **Favorite Quotes**: All quotes you've marked as favorites
+- **Daily Affirmation**: Your affirmation for the day
+- **Habits**: All tracked habits and their completion history
+- **Vision Board**: All your goals and dreams
 - **Timer Stats**: Daily focus sessions, total focus time, and streak count
 - **Daily Streaks**: Maintains your consecutive days of productivity (resets if you skip a day)
 
