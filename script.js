@@ -141,12 +141,9 @@ function setupKeyboardShortcuts() {
         }
         
         // Space: Start/Pause timer
-        if (e.key === ' ' && !timerRunning) {
+        if (e.key === ' ') {
             e.preventDefault();
-            startTimer();
-        } else if (e.key === ' ' && timerRunning) {
-            e.preventDefault();
-            pauseTimer();
+            timerRunning ? pauseTimer() : startTimer();
         }
         
         // R: Reset timer
@@ -216,8 +213,12 @@ function showKeyboardShortcutsHelp() {
     document.body.appendChild(helpModal);
     
     const closeModal = () => {
-        overlay.remove();
-        helpModal.remove();
+        if (overlay && overlay.parentNode) {
+            overlay.remove();
+        }
+        if (helpModal && helpModal.parentNode) {
+            helpModal.remove();
+        }
     };
     
     overlay.addEventListener('click', closeModal);
@@ -426,6 +427,7 @@ let timerStats = {
 
 // Settings
 let soundEnabled = true;
+let audioContext = null; // Reusable audio context
 
 // ===== FAVORITES FUNCTIONALITY =====
 let currentQuote = null;
@@ -727,7 +729,10 @@ function toggleSound() {
 function playCompletionSound() {
     // Create a simple completion sound using Web Audio API
     try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // Initialize audio context if not already created
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
         
         // Create oscillators for a pleasant notification sound
         const playTone = (frequency, duration, delay = 0) => {
